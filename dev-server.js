@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchAll } = require('./feeds');
 const { scoreItems } = require('./scoring');
+const { handleArticle, handleImage } = require('./gemini');
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC = path.join(__dirname, 'public');
@@ -10,7 +11,7 @@ const cache = new Map();
 const TTL = 5 * 60 * 1000;
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml' };
+  '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.woff2': 'font/woff2' };
 
 async function search(q) {
   const key = q.toLowerCase();
@@ -32,6 +33,13 @@ const server = http.createServer(async (req, res) => {
     try { res.end(JSON.stringify(await search(q))); }
     catch (e) { res.statusCode = 502; res.end(JSON.stringify({ error: 'Não consegui consultar as fontes agora.', detail: e.message })); }
     return;
+  }
+  if (url.pathname === '/api/article' || url.pathname === '/api/image') {
+    const handler = url.pathname === '/api/article' ? handleArticle : handleImage;
+    const r = await handler(Object.fromEntries(url.searchParams));
+    for (const [k, v] of Object.entries(r.headers)) res.setHeader(k, v);
+    res.statusCode = r.status;
+    return res.end(r.body);
   }
   const rel = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
   const file = path.join(PUBLIC, path.normalize(rel));
