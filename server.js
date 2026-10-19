@@ -10,7 +10,7 @@ const cache = new Map();
 const TTL = 5 * 60 * 1000;
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml' };
+  '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.woff2': 'font/woff2' };
 
 async function search(q) {
   const key = q.toLowerCase();

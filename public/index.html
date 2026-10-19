@@ -3,72 +3,122 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Confere</title>
-<meta name="description" content="Digite uma afirmação, veja quem noticiou e quanto cada fonte pesa. Sem IA, só regras que você pode ler.">
+<title>Confere, notícias e fontes</title>
+<meta name="description" content="Manchetes do dia por editoria, com a fonte e a hora de cada matéria. E uma ferramenta para conferir o que você ouviu.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Mono:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Mono:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="strip">
   <span id="today"></span>
-  <span>Sem IA na busca. Placar feito por regras abertas.</span>
+  <span>Manchetes de feeds públicos, ordenadas por hora</span>
 </div>
 
 <header class="masthead">
-  <h1>Confere<span class="dot">.</span></h1>
-  <p class="tag">Escreva o que você ouviu. Veja quem publicou, quando, e quanto cada fonte merece de crédito.</p>
+  <h1><a href="/">Confere<span class="dot">.</span></a></h1>
+  <p class="tag">O que foi publicado hoje, por quem, e há quanto tempo.</p>
 </header>
 
+<nav class="nav" aria-label="Editorias">
+  <a href="#brasil">Brasil</a>
+  <a href="#mundo">Mundo</a>
+  <a href="#politica">Política</a>
+  <a href="#economia">Economia</a>
+  <a href="#esporte">Esporte</a>
+  <a href="#cultura">Cultura</a>
+  <a href="#ciencia">Ciência</a>
+  <a href="#conferir" class="check-link">Conferir uma notícia</a>
+</nav>
+
 <main>
-  <form id="form" class="ask" autocomplete="off">
-    <label for="q">O que você quer conferir?</label>
-    <div class="ask-row">
-      <input id="q" name="q" type="text" placeholder="Neymar morreu" maxlength="200" required>
-      <button type="submit">Conferir</button>
-    </div>
-    <p class="try">Tente:
-      <a href="#" data-q="Neymar morreu">Neymar morreu</a>
-      <a href="#" data-q="vacina causa autismo">vacina causa autismo</a>
-      <a href="#" data-q="Copa do Mundo 2026 final">Copa do Mundo 2026 final</a>
-    </p>
-  </form>
-
-  <section id="status" class="status" hidden></section>
-
-  <section id="out" hidden>
-    <div id="verdict" class="verdict"></div>
-    <div class="bar">
-      <h2 id="count"></h2>
-      <label class="check"><input type="checkbox" id="hideUnknown"> Esconder fontes fora da lista</label>
-    </div>
-    <ol id="list" class="list"></ol>
+  <section id="brasil" class="front">
+    <article class="lead" id="lead"></article>
+    <div class="subs" id="subs"></div>
+    <aside class="latest" aria-labelledby="latest-h">
+      <h2 id="latest-h">Últimas</h2>
+      <ol id="latest"></ol>
+    </aside>
   </section>
 
-  <section id="method" class="method">
-    <h2>Como o placar é feito</h2>
-    <div class="method-grid">
-      <p class="lead">Nenhuma IA lê ou resume nada. Cada matéria recebe até 100 pontos somando quatro coisas que dá para conferir à mão.</p>
+  <div class="duo">
+    <section id="politica" class="sec"><h2>Política</h2><div id="s-politica"></div></section>
+    <section id="economia" class="sec"><h2>Economia</h2><div id="s-economia"></div></section>
+  </div>
+</main>
+
+<section id="esporte" class="sport">
+  <div class="sport-in">
+    <h2>Esporte</h2>
+    <ol id="s-esporte"></ol>
+  </div>
+</section>
+
+<main>
+  <section id="mundo" class="world">
+    <h2>Mundo</h2>
+    <div id="s-mundo"></div>
+  </section>
+
+  <div class="duo offset">
+    <section id="cultura" class="sec"><h2>Cultura</h2><div id="s-cultura"></div></section>
+    <section id="ciencia" class="sec"><h2>Ciência</h2><div id="s-ciencia"></div></section>
+  </div>
+</main>
+
+<section id="conferir" class="verify">
+  <div class="verify-in">
+    <div class="verify-head">
+      <h2>Ouviu algo? Confira.</h2>
+      <p>Escreva a afirmação como ela chegou até você. A busca lista quem publicou sobre o assunto e dá a cada matéria uma nota de até 100, por regras abertas, sem IA.</p>
+    </div>
+
+    <form id="form" class="ask" autocomplete="off">
+      <label for="q">Afirmação</label>
+      <div class="ask-row">
+        <input id="q" name="q" type="text" placeholder="vacina causa autismo" maxlength="200" required>
+        <button type="submit">Conferir</button>
+      </div>
+      <p class="try">Exemplos:
+        <a href="#" data-q="Neymar morreu">Neymar morreu</a>
+        <a href="#" data-q="vacina causa autismo">vacina causa autismo</a>
+        <a href="#" data-q="Copa do Mundo 2026 final">Copa do Mundo 2026 final</a>
+      </p>
+    </form>
+
+    <section id="status" class="status" hidden></section>
+
+    <section id="out" hidden>
+      <div id="verdict" class="verdict"></div>
+      <div class="bar">
+        <h3 id="count"></h3>
+        <label class="check"><input type="checkbox" id="hideUnknown"> Esconder fontes fora da lista</label>
+      </div>
+      <ol id="list" class="list"></ol>
+    </section>
+
+    <div class="method">
+      <h3>Como a nota é calculada</h3>
       <dl>
         <dt><b>60</b> Fonte</dt>
-        <dd>Peso fixo por tipo de veículo: agência e imprensa de referência, grande portal, desconhecida, sátira. A lista está em <code>sources.js</code> e pode ser editada.</dd>
+        <dd>Peso fixo por tipo de veículo. A lista está em <code>sources.js</code> e pode ser editada.</dd>
         <dt><b>20</b> Aderência</dt>
-        <dd>Quantas palavras da sua busca aparecem na manchete. Manchete que fala de outra coisa perde pontos.</dd>
+        <dd>Quantas palavras da busca aparecem na manchete.</dd>
         <dt><b>10</b> Recência</dt>
-        <dd>Matéria das últimas 48 horas pontua cheio. Com mais de seis meses, zero.</dd>
+        <dd>Últimas 48 horas pontuam cheio. Passou de seis meses, zero.</dd>
         <dt><b>10</b> Corroboração</dt>
         <dd>Dois pontos por veículo diferente que cobre o mesmo assunto, até dez.</dd>
       </dl>
+      <p class="warn">A nota mede a fonte e a convergência entre fontes, não a verdade de cada frase. Abra a matéria antes de concluir.</p>
     </div>
-    <p class="warn">O placar mede a fonte e a convergência entre fontes, não a verdade de cada frase. Uma fonte excelente também erra. Abra a matéria antes de concluir.</p>
-  </section>
-</main>
+  </div>
+</section>
 
 <footer>
   <span>Confere</span>
-  <span>Manchetes via feeds RSS públicos do Google Notícias e do Bing Notícias.</span>
+  <span>Manchetes via feeds RSS públicos do Google Notícias e do Bing Notícias. Cada link leva à matéria original.</span>
 </footer>
 
 <script src="app.js"></script>
