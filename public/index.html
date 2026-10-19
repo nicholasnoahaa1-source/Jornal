@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Confere, notícias e fontes</title>
 <meta name="description" content="Manchetes do dia por editoria, com a fonte e a hora de cada matéria. E uma ferramenta para conferir o que você ouviu.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,13 @@
 
 <header class="masthead">
   <h1><a href="/">Confere<span class="dot">.</span></a></h1>
-  <p class="tag">O que foi publicado hoje, por quem, e há quanto tempo.</p>
+  <form id="search" class="search" role="search" action="/" method="get">
+    <label for="sq">Buscar notícias</label>
+    <div class="search-row">
+      <input id="sq" name="busca" type="search" placeholder="Buscar notícias" maxlength="200" enterkeyhint="search" autocomplete="off" required>
+      <button type="submit">Buscar</button>
+    </div>
+  </form>
 </header>
 
 <nav class="nav" aria-label="Editorias">
@@ -34,6 +40,14 @@
 </nav>
 
 <main>
+  <section id="results" class="results" hidden aria-live="polite">
+    <div class="results-head">
+      <h2 id="results-h"></h2>
+      <button type="button" id="clear" class="linkbtn">Limpar busca</button>
+    </div>
+    <ol id="results-list"></ol>
+  </section>
+
   <section id="brasil" class="front">
     <article class="lead" id="lead"></article>
     <div class="subs" id="subs"></div>

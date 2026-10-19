@@ -72,6 +72,41 @@ async function loadFront() {
   }));
 }
 
+/* busca */
+function paintResults(q, items) {
+  $('results-h').innerHTML = `Resultados para <span class="q">${esc(q)}</span>`;
+  $('results-list').innerHTML = items.length ? items.map(i => `<li>
+      <span class="when">${ago(i.date)}</span>
+      <div>${link(i)}<div class="meta"><b>${esc(i.source || i.host || 'Fonte desconhecida')}</b></div></div>
+    </li>`).join('') : '<li class="empty">Nada encontrado para essa busca. Tente outras palavras.</li>';
+}
+
+async function runSearch(q) {
+  q = q.trim();
+  if (q.length < 2) return;
+  $('sq').value = q;
+  history.replaceState(null, '', '?busca=' + encodeURIComponent(q));
+  $('results').hidden = false;
+  $('results-h').innerHTML = `Buscando <span class="q">${esc(q)}</span>`;
+  $('results-list').innerHTML = skel(4);
+  $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  try {
+    const r = await fetch('/api/search?q=' + encodeURIComponent(q));
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'Erro');
+    paintResults(q, pick(data.items, 20));
+  } catch (e) {
+    $('results-h').textContent = 'Busca indisponível';
+    $('results-list').innerHTML = `<li class="empty">${esc(e.message)}</li>`;
+  }
+}
+
+$('search').addEventListener('submit', e => { e.preventDefault(); runSearch($('sq').value); });
+$('clear').addEventListener('click', () => {
+  $('results').hidden = true; $('sq').value = '';
+  history.replaceState(null, '', location.pathname);
+});
+
 /* conferir */
 function setStatus(html, err) {
   const s = $('status');
@@ -150,5 +185,6 @@ $('hideUnknown').addEventListener('change', render);
 document.querySelectorAll('.try a').forEach(a => a.addEventListener('click', e => { e.preventDefault(); run(a.dataset.q); }));
 
 loadFront();
-const initial = new URLSearchParams(location.search).get('q');
-if (initial) run(initial);
+const params = new URLSearchParams(location.search);
+if (params.get('busca')) runSearch(params.get('busca'));
+else if (params.get('q')) run(params.get('q'));
