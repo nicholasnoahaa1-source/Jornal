@@ -4,7 +4,7 @@
   "private": true,
   "description": "Busca de notícias com pontuação de confiabilidade por regras, sem IA.",
   "scripts": {
-    "start": "node server.js",
+    "start": "node dev-server.js",
     "test": "node test/run.js"
   },
   "engines": { "node": ">=18" }
