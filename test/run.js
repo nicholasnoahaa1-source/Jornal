@@ -11,7 +11,7 @@ assert.ok(!items[0].title.endsWith(' - g1'), 'sufixo da fonte removido');
 const { items: s, summary } = scoreItems(items, 'Neymar morreu');
 const by = h => s.find(i => i.host.includes(h));
 assert.ok(by('sensacionalista').score <= 15, 'sátira fica baixa');
-assert.ok(by('noticiasdiaja').score < by('g1.globo').score, 'fonte desconhecida pontua menos');
+assert.ok(by('noticiasdiaja').score < by('folha').score, 'fonte desconhecida pontua menos');
 assert.ok(by('lance').score <= 35, 'manchete fora do tema é limitada');
 assert.strictEqual(summary.level, 'denied', 'boato detectado');
 assert.ok(s.every(i => i.score >= 0 && i.score <= 100));
