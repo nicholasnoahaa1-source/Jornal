@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
 
 <div class="strip">
   <span id="today"></span>
@@ -28,18 +29,19 @@
   </form>
 </header>
 
-<nav class="nav" aria-label="Editorias">
+<nav class="nav" id="nav" aria-label="Editorias">
   <a href="#brasil">Brasil</a>
-  <a href="#mundo">Mundo</a>
   <a href="#politica">Política</a>
   <a href="#economia">Economia</a>
   <a href="#esporte">Esporte</a>
+  <a href="#mundo">Mundo</a>
   <a href="#cultura">Cultura</a>
   <a href="#ciencia">Ciência</a>
   <a href="#conferir" class="check-link">Conferir uma notícia</a>
+  <span class="nav-ind" aria-hidden="true"></span>
 </nav>
 
-<main>
+<main id="conteudo">
   <section id="results" class="results" hidden aria-live="polite">
     <div class="results-head">
       <h2 id="results-h"></h2>
@@ -136,5 +138,6 @@
 </footer>
 
 <script src="app.js"></script>
+<script type="module" src="fx.js"></script>
 </body>
 </html>

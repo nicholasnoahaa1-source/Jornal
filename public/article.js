@@ -41,7 +41,7 @@ function render({ article: a, sources, imageUrl }) {
   $('art').innerHTML = `
     <article class="piece">
       <div class="head">
-        <p class="meta"><b>${esc(src.source || 'Fonte desconhecida')}</b> · apurada a partir da manchete: <em>${esc(src.title)}</em></p>
+        <p class="meta"><b>${esc(src.source || 'Fonte desconhecida')}</b><span>Apurada a partir da manchete: <em>${esc(src.title)}</em></span></p>
         <h1>${esc(a.titulo)}</h1>
         ${a.linhaFina ? `<p class="deck">${esc(a.linhaFina)}</p>` : ''}
       </div>
@@ -53,7 +53,7 @@ function render({ article: a, sources, imageUrl }) {
       <aside class="side">
         <section class="verdict-box ${v.cls}">
           <h2>Confiabilidade</h2>
-          <p class="v">${v.label}</p>
+          <p class="v">${v.label}</p><span class="rule"></span>
           <p>${esc(a.resumoVeredito)}</p>
           ${a.motivos.length ? `<h3>Por quê</h3><ul>${list(a.motivos)}</ul>` : ''}
           ${a.alertas.length ? `<h3 class="warn-h">Atenção</h3><ul class="warn-l">${list(a.alertas)}</ul>` : ''}

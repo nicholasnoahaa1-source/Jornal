@@ -36,7 +36,7 @@ function pick(items, n) {
   return good.slice(0, n * 2).sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, n);
 }
 
-const byline = i => `<div class="meta"><b>${esc(i.source || i.host || 'Fonte desconhecida')}</b> · <span class="t">${ago(i.date)}</span></div>`;
+const byline = i => `<div class="meta"><b>${esc(i.source || i.host || 'Fonte desconhecida')}</b><span class="t">${ago(i.date)}</span></div>`;
 const art = i => 'article.html?' + new URLSearchParams({ t: i.title, s: i.source || i.host || '', l: i.link || '', d: i.date || '' });
 const link = i => `<span class="hl"><a href="${esc(art(i))}">${esc(i.title)}</a></span>`;
 const story = (i, big) => `<article class="story${big ? ' big' : ''}">${link(i)}${byline(i)}</article>`;
@@ -50,7 +50,7 @@ function paint(id, items) {
     $('subs').innerHTML = rest.slice(0, 2).map(i => `<article class="sub">${byline(i)}<h3 class="hl"><a href="${esc(art(i))}">${esc(i.title)}</a></h3></article>`).join('');
     $('latest').innerHTML = rest.slice(2, 10).map(i => `<li><span class="when">${clock(i.date)}</span><div>${link(i)}<div class="meta">${esc(i.source || i.host)}</div></div></li>`).join('');
   } else if (id === 'esporte') {
-    $('s-esporte').innerHTML = items.slice(0, 5).map((i, k) => `<li><span class="n">${String(k + 1).padStart(2, '0')}</span><div>${link(i)}${byline(i)}</div></li>`).join('') || `<li>${none}</li>`;
+    $('s-esporte').innerHTML = items.slice(0, 5).map(i => `<li><span class="n">${clock(i.date)}</span><div>${link(i)}${byline(i)}</div></li>`).join('') || `<li>${none}</li>`;
   } else if (id === 'mundo') {
     $('s-mundo').innerHTML = items.slice(0, 8).map(i => story(i)).join('') || none;
   } else {
