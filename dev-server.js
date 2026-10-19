@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchAll } = require('./feeds');
 const { scoreItems } = require('./scoring');
+const { handleArticle, handleImage } = require('./gemini');
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC = path.join(__dirname, 'public');
@@ -32,6 +33,13 @@ const server = http.createServer(async (req, res) => {
     try { res.end(JSON.stringify(await search(q))); }
     catch (e) { res.statusCode = 502; res.end(JSON.stringify({ error: 'Não consegui consultar as fontes agora.', detail: e.message })); }
     return;
+  }
+  if (url.pathname === '/api/article' || url.pathname === '/api/image') {
+    const handler = url.pathname === '/api/article' ? handleArticle : handleImage;
+    const r = await handler(Object.fromEntries(url.searchParams));
+    for (const [k, v] of Object.entries(r.headers)) res.setHeader(k, v);
+    res.statusCode = r.status;
+    return res.end(r.body);
   }
   const rel = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
   const file = path.join(PUBLIC, path.normalize(rel));

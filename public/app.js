@@ -37,7 +37,8 @@ function pick(items, n) {
 }
 
 const byline = i => `<div class="meta"><b>${esc(i.source || i.host || 'Fonte desconhecida')}</b> · <span class="t">${ago(i.date)}</span></div>`;
-const link = i => `<span class="hl"><a href="${esc(i.link)}" target="_blank" rel="noopener noreferrer">${esc(i.title)}</a></span>`;
+const art = i => 'article.html?' + new URLSearchParams({ t: i.title, s: i.source || i.host || '', l: i.link || '', d: i.date || '' });
+const link = i => `<span class="hl"><a href="${esc(art(i))}">${esc(i.title)}</a></span>`;
 const story = (i, big) => `<article class="story${big ? ' big' : ''}">${link(i)}${byline(i)}</article>`;
 const skel = n => Array.from({ length: n }, () => '<div class="skel"></div>').join('');
 const none = '<p class="empty">Sem matérias agora. Tente recarregar em alguns minutos.</p>';
@@ -45,8 +46,8 @@ const none = '<p class="empty">Sem matérias agora. Tente recarregar em alguns m
 function paint(id, items) {
   if (id === 'brasil') {
     const [lead, ...rest] = items;
-    $('lead').innerHTML = lead ? `${byline(lead)}<h2 class="hl"><a href="${esc(lead.link)}" target="_blank" rel="noopener noreferrer">${esc(lead.title)}</a></h2>` : none;
-    $('subs').innerHTML = rest.slice(0, 2).map(i => `<article class="sub">${byline(i)}<h3 class="hl"><a href="${esc(i.link)}" target="_blank" rel="noopener noreferrer">${esc(i.title)}</a></h3></article>`).join('');
+    $('lead').innerHTML = lead ? `${byline(lead)}<h2 class="hl"><a href="${esc(art(lead))}">${esc(lead.title)}</a></h2>` : none;
+    $('subs').innerHTML = rest.slice(0, 2).map(i => `<article class="sub">${byline(i)}<h3 class="hl"><a href="${esc(art(i))}">${esc(i.title)}</a></h3></article>`).join('');
     $('latest').innerHTML = rest.slice(2, 10).map(i => `<li><span class="when">${clock(i.date)}</span><div>${link(i)}<div class="meta">${esc(i.source || i.host)}</div></div></li>`).join('');
   } else if (id === 'esporte') {
     $('s-esporte').innerHTML = items.slice(0, 5).map((i, k) => `<li><span class="n">${String(k + 1).padStart(2, '0')}</span><div>${link(i)}${byline(i)}</div></li>`).join('') || `<li>${none}</li>`;
@@ -105,7 +106,7 @@ function render() {
     return `<li class="row">
       <div class="score ${cls}" title="Pontuação da matéria">${i.score}</div>
       <div>
-        <h3><a href="${esc(i.link)}" target="_blank" rel="noopener noreferrer">${esc(i.title)}</a></h3>
+        <h3><a href="${esc(art(i))}">${esc(i.title)}</a></h3>
         <div class="rmeta">
           <span class="src">${esc(i.source || i.host || 'Fonte desconhecida')}</span>
           <span class="badge ${i.tier}">${TIER[i.tier]}</span>

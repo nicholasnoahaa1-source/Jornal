@@ -1,5 +1,9 @@
 {
   "framework": null,
   "outputDirectory": "public",
-  "functions": { "api/search.js": { "maxDuration": 15 } }
+  "functions": {
+    "api/search.js": { "maxDuration": 15 },
+    "api/article.js": { "maxDuration": 60 },
+    "api/image.js": { "maxDuration": 60 }
+  }
 }
