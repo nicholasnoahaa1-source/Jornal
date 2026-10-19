@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confere</title>
+<meta name="description" content="Digite uma afirmação, veja quem noticiou e quanto cada fonte pesa. Sem IA, só regras que você pode ler.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Mono:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="strip">
+  <span id="today"></span>
+  <span>Sem IA na busca. Placar feito por regras abertas.</span>
+</div>
+
+<header class="masthead">
+  <h1>Confere<span class="dot">.</span></h1>
+  <p class="tag">Escreva o que você ouviu. Veja quem publicou, quando, e quanto cada fonte merece de crédito.</p>
+</header>
+
+<main>
+  <form id="form" class="ask" autocomplete="off">
+    <label for="q">O que você quer conferir?</label>
+    <div class="ask-row">
+      <input id="q" name="q" type="text" placeholder="Neymar morreu" maxlength="200" required>
+      <button type="submit">Conferir</button>
+    </div>
+    <p class="try">Tente:
+      <a href="#" data-q="Neymar morreu">Neymar morreu</a>
+      <a href="#" data-q="vacina causa autismo">vacina causa autismo</a>
+      <a href="#" data-q="Copa do Mundo 2026 final">Copa do Mundo 2026 final</a>
+    </p>
+  </form>
+
+  <section id="status" class="status" hidden></section>
+
+  <section id="out" hidden>
+    <div id="verdict" class="verdict"></div>
+    <div class="bar">
+      <h2 id="count"></h2>
+      <label class="check"><input type="checkbox" id="hideUnknown"> Esconder fontes fora da lista</label>
+    </div>
+    <ol id="list" class="list"></ol>
+  </section>
+
+  <section id="method" class="method">
+    <h2>Como o placar é feito</h2>
+    <div class="method-grid">
+      <p class="lead">Nenhuma IA lê ou resume nada. Cada matéria recebe até 100 pontos somando quatro coisas que dá para conferir à mão.</p>
+      <dl>
+        <dt><b>60</b> Fonte</dt>
+        <dd>Peso fixo por tipo de veículo: agência e imprensa de referência, grande portal, desconhecida, sátira. A lista está em <code>sources.js</code> e pode ser editada.</dd>
+        <dt><b>20</b> Aderência</dt>
+        <dd>Quantas palavras da sua busca aparecem na manchete. Manchete que fala de outra coisa perde pontos.</dd>
+        <dt><b>10</b> Recência</dt>
+        <dd>Matéria das últimas 48 horas pontua cheio. Com mais de seis meses, zero.</dd>
+        <dt><b>10</b> Corroboração</dt>
+        <dd>Dois pontos por veículo diferente que cobre o mesmo assunto, até dez.</dd>
+      </dl>
+    </div>
+    <p class="warn">O placar mede a fonte e a convergência entre fontes, não a verdade de cada frase. Uma fonte excelente também erra. Abra a matéria antes de concluir.</p>
+  </section>
+</main>
+
+<footer>
+  <span>Confere</span>
+  <span>Manchetes via feeds RSS públicos do Google Notícias e do Bing Notícias.</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
